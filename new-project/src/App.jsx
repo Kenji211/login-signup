@@ -1,5 +1,5 @@
-import Home from './components/Login-SignUp/Home'
-import LoginRegister from './components/Login-SignUp/LoginRegister'
+import Home from './components/Home'
+import LoginRegister from './components/LoginRegister'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
