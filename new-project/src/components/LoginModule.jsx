@@ -8,6 +8,10 @@ const LoginModule = ({onSwitchToRegister})=>{
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const handleForgotPassword = () => {
+        navigate('/forgot-password');
+    };
+
     const handleLoginSubmit = (e) => { 
         e.preventDefault()
     
@@ -25,7 +29,6 @@ const LoginModule = ({onSwitchToRegister})=>{
     }
 
     return(  
-          
         <div className="form-box login">
             <form action="" onSubmit={handleLoginSubmit}>
                 <h1>Login</h1>
@@ -53,8 +56,7 @@ const LoginModule = ({onSwitchToRegister})=>{
                 </>
                 <>
                     <div className="remember-me">
-                        <label><input type="checkbox" /> Remember me</label>
-                        <a href="#">Forgot password?</a>
+                        <a href='' onClick={handleForgotPassword}>Forgot password?</a>
                     </div>
                 </>
 

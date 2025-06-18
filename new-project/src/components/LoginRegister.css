@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: url('./public/assetss/loginbg.jpg') no-repeat;
+    background: url('./assetss/loginbg.jpg') no-repeat;
     background-size: cover;
 }
 
@@ -91,7 +91,7 @@ form .input-box {
 
 form .remember-me {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     font-size: 14px;
     margin: 15px 0 15px;
 }
@@ -126,7 +126,7 @@ form button {
 
 form .confirmPasswordError {
     margin: -30px 0 9px;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 form .register-link {

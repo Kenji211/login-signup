@@ -1,6 +1,5 @@
 import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const RegisterModule = ({ onSwitchToLogin }) => {
@@ -8,22 +7,44 @@ const RegisterModule = ({ onSwitchToLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const handleRegistrationSubmit = (e) => {
-        e.preventDefault()
-        if (confirmPassword !== password) {
-            console.log("Passwords do not match");
-            return;
+    useEffect(() => {
+        if (successMessage) {
+            alert(successMessage);
         }
+        if(error){
+            alert(error);
+        }
+    }, [successMessage, error]);
 
-        axios.post('http://localhost:3001/register', { username, email, password })
-            .then(result => {
-                alert("Registration successful!");
+    const handleRegistrationSubmit = async (e) => {
+        e.preventDefault()
+        setError('');
+        setSuccessMessage('');
+
+        setLoading(true);
+
+        try {
+            const response = await axios.post('http://localhost:3001/register', { username, email, password });
+            setSuccessMessage(response.data.message);
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+        } catch (err) {
+            setError(err.response?.data?.message || 'Registration failed');
+            console.error(err);
+
+            
+        } finally {
+            setLoading(false);
+            if(!error){
                 onSwitchToLogin();
-                console.log(result)
-            })
-            .catch(err => console.log(err))
+            }
+        }
     }
 
     return (
@@ -35,6 +56,7 @@ const RegisterModule = ({ onSwitchToLogin }) => {
                         <input type="text"
                             name='username'
                             placeholder='Username' required
+                            value={username}
                             onChange={(e) => {
                                 setUsername(e.target.value)
                             }}
@@ -46,6 +68,7 @@ const RegisterModule = ({ onSwitchToLogin }) => {
                         <input type="text"
                             name='email'
                             placeholder='Email' required
+                            value={email}
                             onChange={(e) => {
                                 setEmail(e.target.value)
                             }}
@@ -57,6 +80,7 @@ const RegisterModule = ({ onSwitchToLogin }) => {
                         <input type="password"
                             name='password'
                             placeholder='Password' required
+                            value={password}
                             onChange={(e) => {
                                 setPassword(e.target.value)
                             }}
@@ -67,6 +91,7 @@ const RegisterModule = ({ onSwitchToLogin }) => {
                         <input type="password"
                             name='confirm-password'
                             placeholder='Confirm password' required
+                            value={confirmPassword}
                             onChange={(e) => {
                                 setConfirmPassword(e.target.value)
                             }}
@@ -75,13 +100,18 @@ const RegisterModule = ({ onSwitchToLogin }) => {
                     </div>
                 </>
                 {confirmPassword && confirmPassword !== password && (
-                    <p className='confirmPasswordError'
-                        style={{ color: 'red', fontSize: '0.9rem' }}>
-                        Password does not match.
+                    <p className="confirmPasswordError" style={{ color: 'red', fontSize: '0.9rem' }}>
+                        Passwords do not match.
                     </p>
                 )}
 
-                <button type="submit">Sign up</button>
+                {error && (
+                    <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>
+                )}
+
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Signing up...' : 'Sign up'}
+                </button>
 
                 <div className="register-link">
                     <p>Already have an account?
