@@ -8,6 +8,10 @@ const LoginModule = ({onSwitchToRegister})=>{
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const handleForgotPassword = () => {
+        navigate('/forgot-password');
+    };
+
     const handleLoginSubmit = (e) => { 
         e.preventDefault()
     
@@ -18,14 +22,13 @@ const LoginModule = ({onSwitchToRegister})=>{
                     localStorage.setItem('userId', result.data.user._id); //save local db kay wala cloud
                     navigate('/home')
                 }else{
-                    alert(result.data)
+                    alert(result.data.message) // .message kay kung wala Object object ang return sang alert
                 }
             })
             .catch(err => console.log(err))
     }
 
     return(  
-          
         <div className="form-box login">
             <form action="" onSubmit={handleLoginSubmit}>
                 <h1>Login</h1>
@@ -53,8 +56,7 @@ const LoginModule = ({onSwitchToRegister})=>{
                 </>
                 <>
                     <div className="remember-me">
-                        <label><input type="checkbox" /> Remember me</label>
-                        <a href="#">Forgot password?</a>
+                        <a href='' onClick={handleForgotPassword}>Forgot password?</a>
                     </div>
                 </>
 
