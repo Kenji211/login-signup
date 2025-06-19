@@ -2,6 +2,7 @@ import { FaEnvelope } from 'react-icons/fa';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './ForgotPassword.css';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -34,38 +35,40 @@ const ForgotPassword = () => {
 
     return (
         <div className="form-box forgot-password">
-            <form onSubmit={handleForgotPasswordSubmit}>
-                <h1>Reset Password</h1>
-                <div className="input-box">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <FaEnvelope className="icon" />
-                </div>
+            <div className='forget-password-wrapper'>
+                <form onSubmit={handleForgotPasswordSubmit}>
+                    <h1>Reset Password</h1>
+                    <div className="input-box">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <FaEnvelope className="icon" />
+                    </div>
 
-                {error && (
-                    <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>
-                )}
+                    {error && (
+                        <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>
+                    )}
 
-                {successMessage && (
-                    <p style={{ color: 'green', fontSize: '0.9rem' }}>{successMessage}</p>
-                )}
+                    {successMessage && (
+                        <p style={{ color: 'green', fontSize: '0.9rem' }}>{successMessage}</p>
+                    )}
 
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Sending...' : 'Send Reset Link'}
-                </button>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Sending...' : 'Send Reset Link'}
+                    </button>
 
-                <div className="register-link">
-                    <p>
-                       <a href='' onClick={onSwitchToLogin}>Back to Login</a>
-                    </p>
-                </div>
-            </form>
+                    <div className="register-link">
+                        <p>
+                            <a href='' onClick={onSwitchToLogin}>Back to Login</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

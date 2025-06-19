@@ -3,7 +3,7 @@
     width: 100vw;
     background: url('./assetss/welcomebg.jpg') no-repeat;
     background-size: cover;
-    color: white;
+    color: rgb(237, 237, 237);
     padding: 20px;
     display: flex;
     flex-direction: column;
