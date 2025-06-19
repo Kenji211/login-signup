@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
+const { default: Counter } = require('./Counter');
+
 
 const UserSchema = new mongoose.Schema({
+    _id: { type: Number },
     username: {
         type: String,
         required: true,
@@ -31,6 +34,18 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: null
     }
+});
+
+UserSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    const counter = await Counter.findByIdAndUpdate(
+      { _id: 'userId' },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+    this._id = counter.seq;
+  }
+  next();
 });
 
 const UserModel = mongoose.model("users", UserSchema);

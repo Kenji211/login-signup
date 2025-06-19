@@ -84,6 +84,7 @@ app.post('/register', async (req, res) => { // '/register'
         });
 
         const user = await UserModel.create({
+            //_id must be automated from 1 
             username,
             email,
             password: hashedPassword,

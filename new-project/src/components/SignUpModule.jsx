@@ -41,7 +41,7 @@ const RegisterModule = ({ onSwitchToLogin }) => {
             
         } finally {
             setLoading(false);
-            if(!error){
+            if(successMessage){
                 onSwitchToLogin();
             }
         }

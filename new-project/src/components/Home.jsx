@@ -26,11 +26,10 @@ function Home() {
         return <h2>Loading...</h2>;
     }
 
+    document.title= 'Home';
+
     return (
         <div className="homepage">
-            <head>
-                <title>Home</title>
-            </head>
             <div onClick={handleLogout} className='logout'>
                 <a href=''>
                     <IoLogOut className='icon' />
