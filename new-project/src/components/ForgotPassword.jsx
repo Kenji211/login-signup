@@ -37,7 +37,7 @@ const ForgotPassword = () => {
         <div className="form-box forgot-password">
             <div className='forget-password-wrapper'>
                 <form onSubmit={handleForgotPasswordSubmit}>
-                    <h1>Reset Password</h1>
+                    <h1>Forgot Password</h1>
                     <div className="input-box">
                         <input
                             type="email"

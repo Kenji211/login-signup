@@ -28,6 +28,8 @@ const LoginModule = ({onSwitchToRegister})=>{
             .catch(err => console.log(err))
     }
 
+    document.title = 'Login';
+
     return(  
         <div className="form-box login">
             <form action="" onSubmit={handleLoginSubmit}>

@@ -7,9 +7,6 @@ const LoginRegister = () => {
 
     const [action, setAction] = useState('login');
 
-    useEffect(() => {
-        document.title = action === 'login' ? 'Login' : 'Register';
-    }, [action]);
 
     return (
         <div className="login-register-bg">

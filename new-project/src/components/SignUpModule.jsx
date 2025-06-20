@@ -47,6 +47,8 @@ const RegisterModule = ({ onSwitchToLogin }) => {
         }
     }
 
+    document.title = 'Register';
+    
     return (
         <div className="form-box register" >
             <form onSubmit={handleRegistrationSubmit}>
