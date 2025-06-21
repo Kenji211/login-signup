@@ -165,8 +165,9 @@ app.post('/reset-password', async (req, res) => {
     try {
         const user = await UserModel.findOne({
             resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }, // Not expired
+            resetPasswordExpires: { $gt: Date.now() },
         });
+
         if (!user) {
             return res.status(400).json({ status: 'Error', message: 'Invalid or expired reset token' });
         }
@@ -178,11 +179,13 @@ app.post('/reset-password', async (req, res) => {
 
         await user.save();
         res.json({ status: 'Success', message: 'Password reset successfully' });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: 'Error', message: 'Error resetting password' });
     }
 });
+
 
 app.listen(3001, () => {
     console.log('server is running')

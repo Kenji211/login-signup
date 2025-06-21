@@ -1,5 +1,5 @@
 import { FaEnvelope } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './ForgotPassword.css';
@@ -9,6 +9,7 @@ const ForgotPassword = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [successData, setSuccessData] = useState('');
     const navigate = useNavigate();
 
     const handleForgotPasswordSubmit = async (e) => {
@@ -21,6 +22,11 @@ const ForgotPassword = () => {
             const response = await axios.post('http://localhost:3001/forgot-password', { email });
             setSuccessMessage(response.data.message);
             setEmail('');
+            console.log(response.data.status)
+            if(response.data.status === 'Success')
+                {
+                    onSwitchToLogin();
+                }
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to send password reset email');
             console.error(err);
@@ -28,6 +34,12 @@ const ForgotPassword = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+            if (successMessage) {
+                alert(successMessage);
+            }
+        }, [successMessage]);
 
     const onSwitchToLogin = () => {
         navigate('/');
@@ -52,10 +64,6 @@ const ForgotPassword = () => {
 
                     {error && (
                         <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>
-                    )}
-
-                    {successMessage && (
-                        <p style={{ color: 'green', fontSize: '0.9rem' }}>{successMessage}</p>
                     )}
 
                     <button type="submit" disabled={loading}>
