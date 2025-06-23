@@ -30,8 +30,8 @@ function Home() {
 
     return (
         <div className="homepage">
-            <div onClick={handleLogout} className='logout'>
-                <a href=''>
+            <div className='logout'>
+                <a href='' onClick={handleLogout}>
                     <IoLogOut className='icon' />
                     LOGOUT
                 </a>

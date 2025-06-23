@@ -34,16 +34,14 @@ const RegisterModule = ({ onSwitchToLogin }) => {
             setEmail('');
             setPassword('');
             setConfirmPassword('');
+            if(response.data.status === 'Success'){
+                onSwitchToLogin();
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
             console.error(err);
-
-            
         } finally {
             setLoading(false);
-            if(successMessage){
-                onSwitchToLogin();
-            }
         }
     }
 
