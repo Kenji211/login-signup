@@ -14,24 +14,31 @@ app.use(cors({
     credentials: true
 }))
 
-mongoose.connect("mongodb://localhost:27017/test-project")
+const MONGODB_URI = process.env.MONGODB_URI;
+const EMAIL_USER = process.env.EMAIL_USER;
+const BASE_URL = process.env.BASE_URL;
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
+mongoose.connect(MONGODB_URI)
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS    
+        user: EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
 app.post('/login', async (req, res) => { //'/login'
     const { username, password } = req.body;
     try {
-        const user = await UserModel.findOne({username});
-        if(!user){
+        const user = await UserModel.findOne({ username });
+        if (!user) {
             return res.json({ status: 'Error', message: 'User not found' });
         }
-        
+
         if (!user.isVerified) {
             return res.json({ status: 'Error', message: 'Please verify your email before logging in' });
         }
@@ -46,19 +53,6 @@ app.post('/login', async (req, res) => { //'/login'
         console.error(err);
         res.status(500).json({ status: 'Error', message: 'Login failed' });
     }
-
-    // UserModel.findOne({username: username})
-    // .then(user =>{
-    //     if(user){
-    //         if(user.password === password){
-    //             res.json({ status: 'Success', user });
-    //         }else{
-    //             res.json('Password is incorrect')
-    //         }
-    //     }else{
-    //         res.json('User is not registered')
-    //     }
-    // });
 });
 
 
@@ -74,9 +68,9 @@ app.post('/register', async (req, res) => { // '/register'
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationToken = crypto.randomBytes(32).toString('hex');
 
-        const verificationUrl = `http://localhost:3001/verify/${verificationToken}`;
+        const verificationUrl = `${BASE_URL}/verify/${verificationToken}`;
         await transporter.sendMail({
-            from: '"Your App" <krisvon213@gmail.com>',
+            from: `"Your App" <${EMAIL_USER}>`,
             to: email,
             subject: 'Verify Your Email',
             html: `<p>Please verify your email by clicking the link below:</p>
@@ -141,9 +135,9 @@ app.post('/forgot-password', async (req, res) => {
         user.resetPasswordExpires = Date.now() + 3600000; // 1h
         await user.save();
 
-        const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+        const resetUrl = `${FRONTEND_URL}/reset-password/${resetToken}`;
         await transporter.sendMail({
-            from: '"Your App" <krisvon213@gmail.com>',
+            from: `"Your App" <${EMAIL_USER}>`,
             to: email,
             subject: 'Password Reset Request',
             html: `
